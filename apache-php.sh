@@ -23,6 +23,7 @@ read -p 'Specify block number : ' DISKNUM
 snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.2.1.31.1.1.1.1
 read -p 'Specify interface number : ' IFNUM
 mkdir -p -- "${TESTNAME}"
+
 #### FOR X'TH RUN ####
 RUNID=1
 while [ ${RUNID} -le ${RUNCOUNT} ]
@@ -36,16 +37,16 @@ do
     echo "################ RUN: $RUNID ################" >>${TESTNAME}/usage-neti.txt 2>&1
     echo "################ RUN: $RUNID ################" >>${TESTNAME}/usage-neto.txt 2>&1
     #### FOR X CLIENTS ####
-    THREAD=${CLIENTSTEP}
-    while [ ${THREAD} -le ${CLIENTCOUNT} ]
+    CLIENT=${CLIENTSTEP}
+    while [ ${CLIENT} -le ${CLIENTCOUNT} ]
     do
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/results.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-cpui.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-ramf.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-disr.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-disw.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-neti.txt 2>&1
-        echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-neto.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/results.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-cpui.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-ramf.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-disr.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-disw.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-neti.txt 2>&1
+        echo "######## CLIENTS: $CLIENT ########" >>${TESTNAME}/usage-neto.txt 2>&1
         #### SNMPGET ( DURATION / POLL ) TIMES ####
         X=1
 
@@ -78,9 +79,9 @@ do
         done &
 
         #### RUN WRK ####
-        wrk -H 'Connection: close' -c${THREAD} -d${DURATION}s -t${PHYTHREAD} ${HTTP}://${TARGET}:${PORT}/${PAGE} >>${TESTNAME}/results.txt 2>&1
+        wrk -H 'Connection: close' -c${CLIENT} -d${DURATION}s -t${PHYTHREAD} ${HTTP}://${TARGET}:${PORT}/${PAGE} >>${TESTNAME}/results.txt 2>&1
         wait
-        THREAD=$(( THREAD + CLIENTSTEP ))
+        CLIENT=$(( CLIENT + CLIENTSTEP ))
     done
     RUNID=$(( RUNID + 1 ))
 done
