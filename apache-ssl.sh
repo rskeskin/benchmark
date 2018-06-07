@@ -18,12 +18,10 @@ RUNCOUNT=4
 THREADCOUNT=512
 THREADSTEP=64
 CORES=`snmpwalk -v2c -cpublic ${TARGET} 1.3.6.1.2.1.25.3.3.1.2 | wc -l`
-#snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.4.1.2021.13.15.1.1.2
-#read -p 'Specify block number : ' DISKNUM
-#snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.2.1.31.1.1.1.1
-#read -p 'Specify interface number : ' IFNUM
-DISKNUM=9
-IFNUM=2
+snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.4.1.2021.13.15.1.1.2
+read -p 'Specify block number : ' DISKNUM
+snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.2.1.31.1.1.1.1
+read -p 'Specify interface number : ' IFNUM
 mkdir -p -- "${TESTNAME}"
 #### FOR X'TH RUN ####
 RUNID=1

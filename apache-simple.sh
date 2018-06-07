@@ -15,8 +15,8 @@ DURATION=60
 TPOLL=5
 SNMPCOUNT=$(( DURATION / TPOLL ))
 RUNCOUNT=5
-THREADCOUNT=512
-THREADSTEP=64
+CLIENTCOUNT=512
+CLIENTSTEP=64
 CORES=`snmpwalk -v2c -cpublic ${TARGET} 1.3.6.1.2.1.25.3.3.1.2 | wc -l`
 snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.4.1.2021.13.15.1.1.2
 read -p 'Specify block number : ' DISKNUM
@@ -36,8 +36,8 @@ do
     echo "################ RUN: $RUNID ################" >>${TESTNAME}/usage-neti.txt 2>&1
     echo "################ RUN: $RUNID ################" >>${TESTNAME}/usage-neto.txt 2>&1
     #### FOR X CLIENTS ####
-    THREAD=${THREADSTEP}
-    while [ ${THREAD} -le ${THREADCOUNT} ]
+    THREAD=${CLIENTSTEP}
+    while [ ${THREAD} -le ${CLIENTCOUNT} ]
     do
         echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/results.txt 2>&1
         echo "######## CLIENTS: $THREAD ########" >>${TESTNAME}/usage-cpui.txt 2>&1
@@ -80,7 +80,7 @@ do
         #### RUN WRK ####
         wrk -H 'Connection: close' -c${THREAD} -d${DURATION}s -t${PHYTHREAD} ${HTTP}://${TARGET}:${PORT}/${PAGE} >>${TESTNAME}/results.txt 2>&1
         wait
-        THREAD=$(( THREAD + THREADSTEP ))
+        THREAD=$(( THREAD + CLIENTSTEP ))
     done
     RUNID=$(( RUNID + 1 ))
 done
