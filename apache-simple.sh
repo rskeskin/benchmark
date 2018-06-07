@@ -15,8 +15,8 @@ DURATION=60 #estimated value
 TPOLL=5 #estimated value
 SNMPCOUNT=$(( DURATION / TPOLL )) #number of samples received in DURATION Time
 RUNCOUNT=5 #
-THREADCOUNT=512
-THREADSTEP=64
+CLIENTCOUNT=512
+CLIENTSTEP=64
 CORES=`snmpwalk -v2c -cpublic ${TARGET} 1.3.6.1.2.1.25.3.3.1.2 | wc -l`
 snmpwalk -v2c -cpublic -Oq ${TARGET} .1.3.6.1.4.1.2021.13.15.1.1.2
 read -p 'Specify block number : ' DISKNUM
